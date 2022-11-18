@@ -32,7 +32,7 @@ const Filter = ({ setActiveGenre, activeGenre, setFiltered, popular }) => {
           className={activeGenre === 28 ? "active" : ""}
           onClick={() => setActiveGenre(28)}
         >
-          Action
+          Action 
         </button>
       </div>
     </>
