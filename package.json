@@ -1,5 +1,6 @@
 {
   "name": "api-calling-app",
+  "author": "Rohan T George",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
