@@ -1,16 +1,15 @@
 import React from "react";
 
-const Movie = (data) => (
+const Movie = ({movie}) => (
   <div className="movie">
-    {console.log(data)}
-    <img src={data.data.images[0]} alt={data.data.name} />
+    <img src={"https://image.tmdb.org/t/p/original/" + movie.poster_path} alt={movie.title} />
     <div className="movie-info">
-      <h3>{data.data.name}</h3>
+      <h3>{movie.title}</h3>
     </div>
-    <div className="overview">
+    {/* <div className="overview">
       <h3>Overview:</h3>
-      <p>{data.data.about}</p>
-    </div>
+      <p>{movie.overview}</p>
+    </div> */}
   </div>
 );
 
