@@ -1,58 +1,45 @@
 import React, { useEffect, useState } from "react";
 import Movie from "./components/Movie";
-// import API from "./API.json";
+import Filter from "./components/Filter";
+import Header from "./partials/_header";
 
-const FEATURED_API = "https://naruto-api.herokuapp.com/api/v1/characters";
-
-const SEARCH_API = "https://api.jikan.moe/v4/anime/22/characters&query=";
+// const FEATURED_API = "https://naruto-api.herokuapp.com/api/v1/characters";
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [searchTerm, setSearchterm] = useState("");
+  const [popular, setPopular] = useState([]);
+  const [filtered, setFiltered] = useState([]);
+  const [activeGenre, setActiveGenre] = useState(0);
 
   useEffect(() => {
-    fetch(FEATURED_API)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data);
-      });
+    fetchPopular();
   }, []);
 
-  const handleOnSubmit = (e) => {
-    e.preventDefault();
-
-    fetch(SEARCH_API + searchTerm)
-      .then((res) => res.json())
-      .then((data) => {
-        setMovies(data.name);
-      });
-  };
-
-  const handleOnChange = (e) => {
-    setSearchterm(e.target.value);
+  const fetchPopular = async () => {
+    const data = await fetch(
+      "https://api.themoviedb.org/3/movie/popular?api_key=50663d733568df292cc22a4b4c473ec0&language=en-US&page=1"
+    );
+    const movies = await data.json();
+    setPopular(movies.results);
+    setFiltered(movies.results);
   };
 
   return (
     <>
-      <header>
-        <form onSubmit={handleOnSubmit} id="form">
-          <input
-            type="text"
-            id="search"
-            placeholder="Search"
-            className="search"
-            value={searchTerm}
-            onChange={handleOnChange}
-          />
-        </form>
-      </header>
+      <Header />
       <div id="main">
-        {movies?.map((movie) => (
-          <>
-            {/* {console.log(movie)} */}
-            <Movie key={movie.id} data={movie} />
-          </>
-        ))}
+        <div className="filter-buttons">
+          <Filter
+            popular={popular}
+            setFiltered={setFiltered}
+            activeGenre={activeGenre}
+            setActiveGenre={setActiveGenre}
+          />
+        </div>
+        <div className="popular-movies">
+          {filtered?.map((movie) => {
+            return <Movie key={movie.id} movie={movie} />;
+          })}
+        </div>
       </div>
     </>
   );
